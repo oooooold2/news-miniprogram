@@ -1,0 +1,13 @@
+<!--pages/components/navBar.wxml-->
+<view wx:if="{{!isSimple}}" class="wrapper">
+  <view class="icon">
+    <view class="layers"></view>
+  </view>
+  <view class="title">快读·资讯</view>
+</view>
+
+<view wx:if="{{isSimple}}" class="simple-wrapper">
+  <view class="simple-icon" bindtap="back">
+  </view>
+  <view class="simple-title">快读·资讯</view>
+</view>

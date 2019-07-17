@@ -1,13 +1,32 @@
 <!--index.wxml-->
+<nav-bar isSimple="{{false}}"></nav-bar>
 <view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+  <view class="top-bar">
+    <block wx:for="{{newsList}}" wx:key="key">
+      <view class="type-item {{item.isActive ? 'active' : ''}}" 
+            data-type="{{item.key}}"
+            bindtap="typeTapped">{{item.value}}</view>    
     </block>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+  <view class="news-container">
+    <view class="top-news" data-id="{{topNews.id}}" bindtap="redirectToDetails">
+      <image class="top-image" src="{{topNews.firstImage}}" mode="aspectFit"></image>
+      <view class="top-mask">
+        <view class="top-title">{{topNews.title}}</view>
+        <view class="top-time">{{topNews.source}} {{topNews.date}}</view>
+      </view>
+    </view>
+    <block wx:for="{{otherNews}}" wx:key="id">
+      <view class="other-mask" data-id="{{item.id}}" bindtap="redirectToDetails"></view>
+      <view class="other-news">
+        <view class="other-content">
+          {{item.title}}
+          <view class="other-footer">{{item.source}}  {{item.date}}</view>
+        </view>
+        <view class="other-thumbnail">
+          <image class="thumbnail" mode="aspectFit" src="{{item.firstImage}}"></image>
+        </view>
+      </view>
+    </block>
   </view>
 </view>

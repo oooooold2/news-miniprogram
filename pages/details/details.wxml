@@ -1,0 +1,18 @@
+<!--pages/details/details.wxml-->
+<nav-bar isSimple="{{true}}"></nav-bar>
+<view class="container">
+  <view class="title">{{title}}</view>
+  <view class="wrapper">
+    <view>{{source}} {{date}} <text class="read-count">阅读 {{readCount}}</text></view>
+  </view>
+  <view class="contents">
+    <block wx:for="{{content}}" wx:key="id">
+      <block wx:if="{{item.type==='p'}}">
+        <view class="p">{{item.text}}</view>
+      </block>
+      <block wx:if="{{item.type==='image'}}">
+        <image class="img" src="{{item.src}}" mode="aspectFit"></image>
+      </block>
+    </block>
+  </view>
+</view>

@@ -1,54 +1,64 @@
 //index.js
 //获取应用实例
+import { getRequest, toast, formatTime } from '../../utils/util.js'
 const app = getApp()
 
 Page({
   data: {
-    motto: 'Hello World',
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    newsList : [
+      { key: "gn", value: "国内", isActive: true },
+      { key: "gj", value: "国际" },
+      { key: "cj", value: "财经" },
+      { key: "yl", value: "娱乐" },
+      { key: "js", value: "军事" },
+      { key: "ty", value: "体育" },
+      { key: "other", value: "其他" }
+    ],
+    currentCat: "gn",
+    topNews: {},
+    otherNews: []
   },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
-  onLoad: function () {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
+  // 切换分类时发送请求，更新页面，并修改被选择分类的样式
+  typeTapped(ev) {
+    const category = ev.target.dataset.type
+    if (category !== this.data.currentCat) {
+      wx.showLoading({
+        title: '请稍候',
       })
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
+      getRequest("/api/news/list", {type: category})
+        .then(this.setList)
+        .then(wx.hideLoading)
+      this.data.currentCat = category
+      const list = this.data.newsList.map(item => ({ ...item, isActive: item.key === category}))
+      this.setData({
+        newsList: list
       })
     }
   },
-  getUserInfo: function(e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
+  setList: function() {
+    const resp = wx.getStorageSync('response')
+    if (resp.data.code === 200 && resp.data.result.length > 0) {
+      const newsList = resp.data.result
+      this.setNews(newsList)
+    } else {
+      toast('无数据')
+    }
+  },
+  onLoad: function() {
+    getRequest("/api/news/list", {type: 'gn'})
+    .then(this.setList)
+  },
+  setNews: function (list) {
+    let [first, ...others] = list.map(item => ({ ...item, date: formatTime(new Date(item.date))}))
     this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
+      topNews: first,
+      otherNews: others
+    })
+  },
+  redirectToDetails(ev) {
+    const id = ev.target.dataset.id
+    wx.navigateTo({
+      url: `/pages/details/details?id=${id}`,
     })
   }
 })

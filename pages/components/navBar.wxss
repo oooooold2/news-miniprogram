@@ -1,0 +1,85 @@
+/* pages/components/navBar.wxss */
+.wrapper {
+  width: 100%;
+  height: 200rpx;
+  background: rgb(52, 162, 228);
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.icon {
+  flex-basis: 60rpx;
+  height: 60rpx;
+  background: #fff;
+  margin-left: 30rpx;
+  border-radius: 30rpx;
+}
+
+.layers, .layers::before, .layers::after {
+  width: 26rpx;
+  height: 26rpx;
+}
+.layers {
+  background: rgba(52, 162, 228, .7);
+  position: relative;
+  opacity: 0.7;
+  left: 18rpx;
+  top: 18rpx; 
+}
+.layers::before {
+  background: rgb(52, 162, 228);
+  content: '';
+  right: 6rpx;
+  top: 6rpx;
+  position: absolute;
+}
+.layers::after {
+  background: rgba(52, 162, 228, .4);
+  content: '';
+  left: 6rpx;
+  bottom: 6rpx;
+  position: absolute;
+}
+
+.title, .simple-title {
+  flex-basis: 150rpx;
+  height: 40rpx;
+  text-align: center;
+  font-size: 27rpx;
+  line-height: 38rpx;
+  color: #fff;
+}
+
+.simple-title {
+  color: #000;
+}
+
+.simple-icon {
+  position: relative;
+  width: 0;
+  height: 0;
+  border: 30rpx solid transparent;
+  border-right-color: #000; 
+}
+.simple-icon::after {
+  content: '';
+  position: absolute;
+  border: 30rpx solid transparent;
+  border-right-color: #fff;
+  width: 0;
+  height: 0;
+  left: -25rpx;
+  top: -30rpx;
+}
+
+.simple-wrapper {
+  width: 100%;
+  height: 150rpx;
+  border-bottom: 1rpx solid rgb(52, 162, 228);
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

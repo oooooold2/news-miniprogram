@@ -14,6 +14,38 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+const toast = text => {
+  wx.showToast({
+    title: text,
+    icon: 'none',
+    duration: 1000
+  })
+  setTimeout(wx.hideToast, 1000)
+}
+
+const getRequest = (url, data=null, isDetail=false) => {
+  const path = `https://test-miniprogram.com${url}`
+  return new Promise(resolve => {
+    wx.request({
+      url: path,
+      method: 'GET',
+      data: data,
+      success(res) {
+        wx.setStorage({
+          key: isDetail ? 'detail' : 'response',
+          data: res,
+        })
+        resolve()
+      },
+      fail() {
+        toast('数据获取失败')
+      }
+    })
+  })
+}
+
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,
+  getRequest: getRequest,
+  toast: toast
 }
