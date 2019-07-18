@@ -8,8 +8,13 @@
             bindtap="typeTapped">{{item.value}}</view>    
     </block>
   </view>
+  <view class="loader-wrapper">
+    <view class="loader {{isLoading ? 'loader-animate' : ''}}"></view>
+    <text class="loader-text">{{isLoading ? '  加载中' : '下拉刷新'}}</text>
+  </view>
   <view class="news-container">
-    <view class="top-news" data-id="{{topNews.id}}" bindtap="redirectToDetails">
+    <view class="top-mask-wrapper" data-id="{{topNews.id}}" bindtap="redirectToDetails"></view>
+    <view class="top-news">
       <image class="top-image" src="{{topNews.firstImage}}" mode="aspectFit"></image>
       <view class="top-mask">
         <view class="top-title">{{topNews.title}}</view>

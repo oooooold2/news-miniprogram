@@ -1,6 +1,6 @@
 //index.js
 //获取应用实例
-import { getRequest, toast, formatTime } from '../../utils/util.js'
+import { getRequest, toast, formatTime, checkUndefined } from '../../utils/util.js'
 const app = getApp()
 
 Page({
@@ -16,7 +16,8 @@ Page({
     ],
     currentCat: "gn",
     topNews: {},
-    otherNews: []
+    otherNews: [],
+    isLoading: false
   },
   // 切换分类时发送请求，更新页面，并修改被选择分类的样式
   typeTapped(ev) {
@@ -49,7 +50,7 @@ Page({
     .then(this.setList)
   },
   setNews: function (list) {
-    let [first, ...others] = list.map(item => ({ ...item, date: formatTime(new Date(item.date))}))
+    let [first, ...others] = checkUndefined(list).map(item => ({ ...item, date: formatTime(new Date(item.date))}))
     this.setData({
       topNews: first,
       otherNews: others
@@ -60,5 +61,18 @@ Page({
     wx.navigateTo({
       url: `/pages/details/details?id=${id}`,
     })
+  },
+  onPullDownRefresh: function() {
+    this.setData({
+      isLoading: true
+    })
+    getRequest("/api/news/list", { type: this.data.currentCat })
+      .then(this.setList)
+      .then(setTimeout(() => {
+        wx.stopPullDownRefresh()
+        this.setData({
+          isLoading: false
+        })
+      }, 1000))
   }
 })

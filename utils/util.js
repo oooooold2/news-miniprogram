@@ -44,8 +44,15 @@ const getRequest = (url, data=null, isDetail=false) => {
   })
 }
 
+const checkUndefined = list => list
+  .map(item => 
+    ({ ...item, 
+    firstImage: item.firstImage === undefined ? 'https://s3-us-west-1.amazonaws.com/udacity-content/rebrand/svg/logo.min.svg' : item.firstImage,
+    source: item.source === undefined ? '未知来源' : item.source}))
+
 module.exports = {
   formatTime: formatTime,
   getRequest: getRequest,
-  toast: toast
+  toast: toast,
+  checkUndefined: checkUndefined
 }

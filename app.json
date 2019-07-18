@@ -5,7 +5,7 @@
     "pages/details/details"
   ],
   "window": {
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "dark",
     "navigationStyle": "custom"
   },
   "sitemapLocation": "sitemap.json"
